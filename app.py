@@ -1,27 +1,30 @@
-from flask import Flask, request, jsonify, render_template
+import streamlit as st
 import numpy as np
 from tensorflow.keras.models import load_model
-
-app = Flask(__name__)
 
 # Load the pre-trained model
 model = load_model('models/new_model.h5')
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# Define the Streamlit app
+def main():
+    st.title("Prediction App")
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    data = request.get_json()
-    inputs = np.array(data['inputs']).reshape(1, -1)  # Reshape for model input
+    # Input fields for user input
+    inputs = st.text_input("Enter your inputs (comma separated):")
+    
+    if st.button("Predict"):
+        if inputs:
+            # Process the input
+            input_array = np.array([float(i) for i in inputs.split(",")]).reshape(1, -1)
 
-    # Perform prediction
-    predictions = model.predict(inputs)
+            # Perform prediction
+            predictions = model.predict(input_array)
 
-    # Convert predictions to list and send back as JSON
-    output = predictions.tolist()
-    return jsonify({'predictions': output})
+            # Convert predictions to list and display the result
+            output = predictions.tolist()
+            st.write("Predictions:", output)
+        else:
+            st.error("Please enter valid inputs.")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    main()
