@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Output</title>
+</head>
+<body>
+  <h1>Output</h1>
+  <div id="output"></div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const likecount = urlParams.get('likecount');
+    const commentcount = urlParams.get('commentcount');
+    const repostcount = urlParams.get('repostcount');
+    const totalEngagements = urlParams.get('total_engagements');
+    const conversion = urlParams.get('conversion');
+
+    const outputHtml = `
+      <p>Like Count: ${likecount}</p>
+      <p>Comment Count: ${commentcount}</p>
+      <p>Repost Count: ${repostcount}</p>
+      <p>Total Engagements: ${totalEngagements}</p>
+      <p>Conversion: ${conversion}</p>
+    `;
+    document.getElementById('output').innerHTML = outputHtml;
+  </script>
+</body>
+</html>
